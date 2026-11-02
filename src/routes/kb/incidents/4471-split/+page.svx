@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: Mateusz Pajor
 status: open
 reviewed: 2026-11-02
-signature: Mateusz Pajor
+signature: v1.eyJzdWIiOiIzMTIzIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTM2MjE5MzcsImV4cCI6MTc5MzcwODMzN30.DQnEKz47TJ8C4o0R_FbZ28LbOvGihcaXTjYFlHHoY_0
 ---
 
 <script>
