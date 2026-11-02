@@ -38,14 +38,17 @@ Do not close #4471 when the parser fix ships. Two of its problems have no fix qu
   date the tenant's way, day first. People type what the hint says. A parser fix does not reach it.
 - **`one-day`**: the booking slides by one day, a weekday earlier ("Client in Lisbon got
   Tuesday. Client in Toronto got Monday."). No swap at all: a time-zone bug. The desk already
-  read these reports this way (`desk-notes.json`), but the cause table files them under `parser`.
+  read these reports this way (`desk-notes.json`).
 
 ## How it was counted
+
+With the desk's own view, as exported (`#lib/kb/causes.ts`):
 
 1. One report per id: the export pages overlap, so some reports come twice.
 2. Cause by tenant, not by intake tag: `meta.intakeTag` is a guess from the reporter's
    browser, and it disagrees with the tenant (compare *tagged as* above).
-3. Reports the desk read as a one-day move are their own problem, not a footnote.
+3. A report stays counted where it is filed. The reports the desk read as a one-day move are
+   filed under `parser` by tenant and counted there; they get their own row and ticket too.
 
 The logic is in `#lib/kb/problems.ts`, on top of `#lib/kb/causes.ts`.
 

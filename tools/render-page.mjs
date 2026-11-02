@@ -62,13 +62,17 @@ body = body.replace(/<script>[\s\S]*?<\/script>/, '');
 const components = {
   ProblemTable({ ticket }) {
     const s = splitTicket(reports, ticket, tenantOf, notes);
-    const total = s.groups.reduce((n, g) => n + g.reports.length, 0);
     const link = (p) =>
       issues[p] ? `<a href="${esc(issues[p])}">${esc(issues[p].replace(/^.*\/issues\//, '#'))}</a>` : '<span class="none">no ticket</span>';
+    const foot = s.groups
+      .filter((g) => g.alsoFiledUnder.length)
+      .map((g) => `<p class="note">* Read from the bodies. The desk counts these ${g.reports.length} reports where they are filed by tenant, under ${g.alsoFiledUnder.map((c) => `<code>${c}</code>`).join(', ')}, as well.</p>`)
+      .join('\n');
     return `<p class="sum"><strong>${s.unique}</strong> reports merged into #${ticket} (${s.rows} rows in the export, ${s.rows - s.unique} of them repeats) · <strong>${s.groups.length}</strong> ${s.groups.length === 1 ? 'problem' : 'problems'}</p>
 <table><thead><tr><th>problem</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>ticket</th></tr></thead><tbody>
-${s.groups.map((g) => `<tr><td><code>${g.problem}</code></td><td>${g.reports.length}</td><td class="tags">${esc(tags(g))}</td><td>${g.tenants}</td><td>${g.firstSeen} → ${g.lastSeen}</td><td>${link(g.problem)}</td></tr>`).join('\n')}
-</tbody><tfoot><tr><td>total</td><td>${total}</td><td colspan="4"></td></tr></tfoot></table>`;
+${s.groups.map((g) => `<tr><td><code>${g.problem}</code></td><td>${g.reports.length}${g.alsoFiledUnder.length ? '*' : ''}</td><td class="tags">${esc(tags(g))}</td><td>${g.tenants}</td><td>${g.firstSeen} → ${g.lastSeen}</td><td>${link(g.problem)}</td></tr>`).join('\n')}
+</tbody></table>
+${foot}`;
   },
   CauseTable({ ticket }) {
     const merged = uniqueById(reports).filter((r) => r.mergedInto === ticket);

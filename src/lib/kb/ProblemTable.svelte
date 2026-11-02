@@ -9,7 +9,6 @@
   let { ticket, issues = {} }: { ticket: number; issues?: Record<string, string> } = $props();
 
   const split = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes));
-  const total = $derived(split.groups.reduce((n, g) => n + g.reports.length, 0));
   const tags = (g: { taggedAs: Record<string, number> }) =>
     Object.entries(g.taggedAs)
       .sort((a, b) => b[1] - a[1])
@@ -33,7 +32,7 @@
     {#each split.groups as g (g.problem)}
       <tr>
         <td><code>{g.problem}</code></td>
-        <td>{g.reports.length}</td>
+        <td>{g.reports.length}{g.alsoFiledUnder.length ? '*' : ''}</td>
         <td class="tags">{tags(g)}</td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
@@ -43,14 +42,18 @@
       </tr>
     {/each}
   </tbody>
-  <tfoot>
-    <tr><td>total</td><td>{total}</td><td colspan="4"></td></tr>
-  </tfoot>
 </table>
+
+{#each split.groups.filter((g) => g.alsoFiledUnder.length) as g (g.problem)}
+  <p class="note">
+    * Read from the bodies. The desk counts these {g.reports.length} reports where they are filed by tenant, under
+    {#each g.alsoFiledUnder as c, i (c)}{i ? ', ' : ''}<code>{c}</code>{/each}, as well.
+  </p>
+{/each}
 
 <style>
   .sum { font-size: 1.1rem; }
   .tags { color: var(--muted); font-size: 0.85em; }
+  .note { color: var(--muted); font-size: 0.85em; }
   .none { color: var(--warn); font-weight: 600; }
-  tfoot td { font-weight: 600; }
 </style>
