@@ -14,9 +14,9 @@ signature: v1.eyJzdWIiOiIzMTIzIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
   const issues = {
-    parser: 'https://github.com/MateuszPajor/mega/issues/1',
-    hint: 'https://github.com/MateuszPajor/mega/issues/2',
-    'one-day': 'https://github.com/MateuszPajor/mega/issues/3',
+    parser: 'https://github.com/MateuszPajor/mega/issues/4',
+    hint: 'https://github.com/MateuszPajor/mega/issues/5',
+    'one-day': 'https://github.com/MateuszPajor/mega/issues/6',
   };
 </script>
 
