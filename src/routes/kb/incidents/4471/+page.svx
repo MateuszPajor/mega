@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 · dates parse mm/dd in eu locales'
 owner: support desk
-status: known
+status: fixed
 reviewed: 2026-09-30
 ---
 
