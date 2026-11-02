@@ -48,9 +48,9 @@ tfoot td { font-weight: 600; }
 <h2>The split</h2>
 <p class="sum"><strong>412</strong> reports merged into #4471 (427 rows in the export, 15 of them repeats) · <strong>3</strong> problems</p>
 <table><thead><tr><th>problem</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>ticket</th></tr></thead><tbody>
-<tr><td><code>parser</code></td><td>379</td><td class="tags">parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/MateuszPajor/mega/issues/4">#4</a></td></tr>
-<tr><td><code>hint</code></td><td>33</td><td class="tags">hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td><a href="https://github.com/MateuszPajor/mega/issues/5">#5</a></td></tr>
-<tr><td><code>one-day</code></td><td>5*</td><td class="tags">parser ×5</td><td>5</td><td>2026-04-02 → 2026-10-04</td><td><a href="https://github.com/MateuszPajor/mega/issues/6">#6</a></td></tr>
+<tr><td><code>parser</code></td><td>379</td><td class="tags">parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><a href="https://github.com/MateuszPajor/mega/issues/1">#1</a></td></tr>
+<tr><td><code>hint</code></td><td>33</td><td class="tags">hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td><a href="https://github.com/MateuszPajor/mega/issues/2">#2</a></td></tr>
+<tr><td><code>one-day</code></td><td>5*</td><td class="tags">parser ×5</td><td>5</td><td>2026-04-02 → 2026-10-04</td><td><a href="https://github.com/MateuszPajor/mega/issues/3">#3</a></td></tr>
 </tbody></table>
 <p class="note">* Read from the bodies. The desk counts these 5 reports where they are filed by tenant, under <code>parser</code>, as well.</p>
 <ul><li><strong><code>parser</code></strong>: the shared parser reads every date month first, and every tenant here writes the day first. Day and month come out swapped. This is the bug #4471 names.</li><li><strong><code>hint</code></strong>: the <code>booking-v3</code> form prints <code>MM/DD/YYYY</code> under its date field, then reads the date the tenant's way, day first. People type what the hint says. A parser fix does not reach it.</li><li><strong><code>one-day</code></strong>: the booking slides by one day, a weekday earlier (&quot;Client in Lisbon got Tuesday. Client in Toronto got Monday.&quot;). No swap at all: a time-zone bug. The desk already read these reports this way (<code>desk-notes.json</code>).</li></ul>
