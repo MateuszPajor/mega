@@ -1,0 +1,64 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: Mateusz Pajor
+status: open
+reviewed: 2026-11-02
+signature: Mateusz Pajor
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const issues = {
+    parser: 'https://github.com/MateuszPajor/mega/issues/1',
+    hint: 'https://github.com/MateuszPajor/mega/issues/2',
+    'one-day': 'https://github.com/MateuszPajor/mega/issues/3',
+  };
+</script>
+
+The [#4471 page](/kb/incidents/4471) says "one issue, one fix queued". Its own cause table
+disagrees, and so do the desk's notes. Read by tenant and by body, the reports in #4471 are
+three different bugs. The queued parser fix closes only the first one.
+
+<Callout kind="warn">
+Do not close #4471 when the parser fix ships. Two of its problems have no fix queued.
+</Callout>
+
+## The split
+
+<ProblemTable ticket={4471} {issues} />
+
+- **`parser`**: the shared parser reads every date month first, and every tenant here writes
+  the day first. Day and month come out swapped. This is the bug #4471 names.
+- **`hint`**: the `booking-v3` form prints `MM/DD/YYYY` under its date field, then reads the
+  date the tenant's way, day first. People type what the hint says. A parser fix does not reach it.
+- **`one-day`**: the booking slides by one day, a weekday earlier ("Client in Lisbon got
+  Tuesday. Client in Toronto got Monday."). No swap at all: a time-zone bug. The desk already
+  read these reports this way (`desk-notes.json`), but the cause table files them under `parser`.
+
+## How it was counted
+
+1. One report per id: the export pages overlap, so some reports come twice.
+2. Cause by tenant, not by intake tag: `meta.intakeTag` is a guess from the reporter's
+   browser, and it disagrees with the tenant (compare *tagged as* above).
+3. Reports the desk read as a one-day move are their own problem, not a footnote.
+
+The logic is in `#lib/kb/problems.ts`, on top of `#lib/kb/causes.ts`.
+
+## What the cause table shows
+
+The same reports through the kb's existing view, for comparison:
+
+<CauseTable ticket={4471} />
+
+## Lessons
+
+- A subject line says how a report sounds, not what broke. Merging on subject
+  ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) hid two bugs inside one ticket.
+- Count from the data, once per id, and place reports by tenant. Intake tags are guesses.
+
+<RenderStamp {signature} />
